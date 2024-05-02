@@ -1,0 +1,23 @@
+cabal-version:  3.0
+name:           hsku
+version:        0.0.1
+license:        MIT
+author:         Mirko Westermeier
+build-type:     Simple
+
+common basics
+    default-language: Haskell2010
+    build-depends:    base >= 4.14.0.0
+    ghc-options:      -Wall
+
+library
+    import:           basics
+    exposed-modules:  HsKu
+    hs-source-dirs:   src
+
+test-suite hsku-test
+    import:           basics
+    type:             exitcode-stdio-1.0
+    build-depends:    hsku, hspec
+    hs-source-dirs:   test
+    main-is:          Main.hs
