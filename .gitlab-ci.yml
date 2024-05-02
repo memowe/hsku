@@ -1,0 +1,8 @@
+build and test:
+  image: haskell:9.4
+  before_script:
+    - cabal update
+  script:
+    - cabal build --enable-tests --only-dependencies all
+    - cabal build --enable-tests all
+    - cabal test --test-show-details=streaming
