@@ -1,8 +1,19 @@
-build and test:
+variables:
+  CABAL_DIR: "$CI_PROJECT_DIR/.cabal-dir"
+  CABAL_CONFIG: "$CI_PROJECT_DIR/.cabal-dir/config"
+
+default:
   image: haskell:9.4
+  cache:
+    paths:
+      - dist-newstyle
+      - $CABAL_DIR
+
+build and test:
   before_script:
+    - if [ -f "$CABAL_CONFIG" ]; then cabal user-config update; else cabal user-config init; fi
     - cabal update
-  script:
     - cabal build --enable-tests --only-dependencies all
+  script:
     - cabal build --enable-tests all
     - cabal test --test-show-details=streaming
