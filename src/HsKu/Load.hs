@@ -2,6 +2,7 @@
 module HsKu.Load where
 
 import            HsKu
+import qualified  Data.Text as T
 import            Data.Maybe
 import            Data.Either
 import qualified  Data.Set as S
@@ -17,8 +18,8 @@ instance FromJSON Language where
     <$>                   (v .: "name")
     <*> fmap toVowels     (v .: "vowels")
     <*> fmap toDiphtongs  (v .: "diphtongs")
-    where toVowels    = S.fromList . map head . words
-          toDiphtongs = S.fromList . words
+    where toVowels    = S.fromList . map T.head . T.words
+          toDiphtongs = S.fromList . T.words
   parseJSON _ = fail "Couldn't parse language"
 
 loadLanguages :: IO Languages
@@ -27,5 +28,5 @@ loadLanguages = do
   langFiles <- filter ((== ".yml") . takeExtension) <$> listDirectory langDir
   nameLangs <- fmap rights $ forM langFiles $ \fp -> do
                 let ln = takeBaseName fp
-                fmap (ln,) <$> decodeFileEither (langDir </> fp)
+                fmap (T.pack ln,) <$> decodeFileEither (langDir </> fp)
   return $ M.fromList nameLangs

@@ -1,12 +1,13 @@
 module HsKu where
 
+import Data.Text
 import Data.Set (Set)
 import Data.Map (Map)
 
 data Language = Language
-  { name      :: String
+  { name      :: Text
   , vowels    :: Set Char
-  , diphtongs :: Set String
+  , diphtongs :: Set Text
   } deriving (Eq, Show)
 
-type Languages = Map String Language
+type Languages = Map Text Language
