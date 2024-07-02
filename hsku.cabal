@@ -20,7 +20,7 @@ common basics
 library
     import:           basics
     exposed-modules:  HsKu, HsKu.Load
-    build-depends:    yaml
+    build-depends:    yaml, megaparsec, mtl
     hs-source-dirs:   src
 
 test-suite hsku-test
