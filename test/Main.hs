@@ -16,11 +16,19 @@ main = hspec $ describe "HsKu tests" $ do
   context "Language loading" $ do
     langs <- runIO $ withSystemTempDirectory "hsku-languages" $ \dir -> do
               writeFile (dir </> "foo.yml")
-                "name: bar\nvowels: a b c\ndiphtongs: de fg\n"
+                "name: foo\nvowels: a b c\ndiphtongs: de fg\n"
+              writeFile (dir </> "bar.yml")
+                "name: bar\nvowels: h i j\ndiphtongs: kl mn\n"
               setEnv "HSKU_LANGUAGES" dir
               loadLanguages
     it "Correct languages parsed" $
-      langs `shouldBe` M.fromList [("foo", Language
-        { name = "bar"
-        , vowels    = S.fromList "abc"
-        , diphtongs = S.fromList ["de", "fg"]})]
+      langs `shouldBe` M.fromList
+        [ ("foo", Language  { name      = "foo"
+                            , vowels    = S.fromList "abc"
+                            , diphtongs = S.fromList ["de", "fg"]
+                            })
+        , ("bar", Language  { name      = "bar"
+                            , vowels    = S.fromList "hij"
+                            , diphtongs = S.fromList ["kl", "mn"]
+                            })
+        ]
