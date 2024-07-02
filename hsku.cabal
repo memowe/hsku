@@ -15,6 +15,7 @@ common basics
                       , directory
                       , filepath
                       , text
+                      , extra
     ghc-options:        -Wall
 
 library

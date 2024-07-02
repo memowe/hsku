@@ -32,3 +32,17 @@ main = hspec $ describe "HsKu tests" $ do
                             , diphtongs = S.fromList ["kl", "mn"]
                             })
         ]
+
+  context "Haiku parsing" $ do
+    let german = Language { name      = "Deutsch"
+                          , vowels    = S.fromList "aeou"
+                          , diphtongs = S.fromList ["au", "ei"]
+                          }
+    it "Reject nonsense" $
+      parseHaiku german "Die Antwort ist 42!" `shouldBe` Nothing
+    it "Correctly split Haiku" $
+      parseHaiku german "Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond."
+        `shouldBe` Just ( "Decken auf dem Gras,"
+                        , "eine Nacht lang ohne Haus -"
+                        , "reich nur durch den Mond."
+                        )
