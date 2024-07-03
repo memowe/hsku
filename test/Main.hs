@@ -1,15 +1,15 @@
 module Main (main) where
 
-import            Test.Hspec
-import            System.IO.Temp
+import Test.Hspec
+import System.IO.Temp
 
-import            HsKu
-import            HsKu.Load
-import            Data.Text
-import qualified  Data.Set as S
-import qualified  Data.Map as M
-import            System.FilePath
-import            System.Environment
+import HsKu
+import HsKu.Load
+import Data.Text
+import Data.Set as S
+import Data.Map as M
+import System.FilePath
+import System.Environment
 
 main :: IO ()
 main = hspec $ describe "HsKu tests" $ do
@@ -43,7 +43,7 @@ main = hspec $ describe "HsKu tests" $ do
                             , vowels    = S.fromList "ao"
                             , diphtongs = S.fromList ["oo", "uu"]
                             }
-        langs   = M.fromList [("de", german), ("foo", fooLang)] :: M.Map Text Language
+        langs   = M.fromList [("de", german), ("foo", fooLang)] :: Map Text Language
         haiku1  = "Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond."  :: Text
         haiku2  = "a o a o a oo uu oo a o a o o a o a o" :: Text
 
