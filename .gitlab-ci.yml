@@ -1,8 +1,50 @@
-build and test:
+variables:
+  CABAL_DIR: "$CI_PROJECT_DIR/.cabal-dir"
+  CABAL_CONFIG: "$CI_PROJECT_DIR/.cabal-dir/config"
+
+stages:
+  - build
+  - build_docs
+  - deploy
+
+default:
   image: haskell:9.4
+  cache:
+    paths:
+      - dist-newstyle
+      - $CABAL_DIR
+
+build and test:
+  stage: build
   before_script:
+    - if [ -f "$CABAL_CONFIG" ]; then cabal user-config update; else cabal user-config init; fi
     - cabal update
-  script:
     - cabal build --enable-tests --only-dependencies all
+  script:
     - cabal build --enable-tests all
     - cabal test --test-show-details=streaming
+
+prepare api docs:
+  stage: build_docs
+  dependencies:
+    - build and test
+  script:
+    - cabal haddock --haddock-hyperlinked-source --haddock-html-location='https://hackage.haskell.org/package/$$pkg-$$version/docs'
+    - mkdir -p apidocs
+    - mv $(find dist-newstyle -wholename '*doc/html/hsku' | head -n 1) apidocs
+  artifacts:
+    paths:
+      - apidocs
+
+pages:
+  stage: deploy
+  dependencies:
+    - prepare api docs
+  only:
+    - main
+  script:
+    - mkdir -p public
+    - cp -r apidocs/* public/
+  artifacts:
+    paths:
+      - public

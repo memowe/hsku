@@ -14,12 +14,14 @@ common basics
                       , containers
                       , directory
                       , filepath
+                      , text
+                      , extra
     ghc-options:        -Wall
 
 library
     import:           basics
     exposed-modules:  HsKu, HsKu.Load
-    build-depends:    yaml
+    build-depends:    yaml, megaparsec, mtl
     hs-source-dirs:   src
 
 test-suite hsku-test
