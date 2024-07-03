@@ -24,6 +24,13 @@ library
     build-depends:    yaml, megaparsec, mtl
     hs-source-dirs:   lib
 
+executable hsku-webservice
+    import:             basics
+    default-extensions: TypeOperators, DataKinds, DeriveGeneric
+    build-depends:      hsku, aeson, servant, servant-server, warp
+    hs-source-dirs:     webservice
+    main-is:            Main.hs
+
 test-suite hsku-test
     import:           basics
     type:             exitcode-stdio-1.0
