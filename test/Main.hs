@@ -5,6 +5,7 @@ import            System.IO.Temp
 
 import            HsKu
 import            HsKu.Load
+import            Data.Text
 import qualified  Data.Set as S
 import qualified  Data.Map as M
 import            System.FilePath
@@ -34,15 +35,38 @@ main = hspec $ describe "HsKu tests" $ do
         ]
 
   context "Haiku parsing" $ do
-    let german = Language { name      = "Deutsch"
-                          , vowels    = S.fromList "aeou"
-                          , diphtongs = S.fromList ["au", "ei"]
-                          }
-    it "Reject nonsense" $
-      parseHaiku german "Die Antwort ist 42!" `shouldBe` Nothing
-    it "Correctly split Haiku" $
-      parseHaiku german "Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond."
-        `shouldBe` Just ( "Decken auf dem Gras,"
-                        , "eine Nacht lang ohne Haus -"
-                        , "reich nur durch den Mond."
-                        )
+    let german  = Language  { name      = "Deutsch"
+                            , vowels    = S.fromList "aeou"
+                            , diphtongs = S.fromList ["au", "ei"]
+                            }
+        fooLang = Language  { name      = "Foo Language"
+                            , vowels    = S.fromList "ao"
+                            , diphtongs = S.fromList ["oo", "uu"]
+                            }
+        langs   = M.fromList [("de", german), ("foo", fooLang)] :: M.Map Text Language
+        haiku1  = "Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond."  :: Text
+        haiku2  = "a o a o a oo uu oo a o a o o a o a o" :: Text
+
+    describe "Simple parsing" $ do
+      it "Reject nonsense" $
+        parseHaikuForLanguage german "Die Antwort ist 42!" `shouldBe` Nothing
+      it "Correctly split Haiku" $
+        parseHaikuForLanguage german haiku1
+          `shouldBe` Just ( "Decken auf dem Gras,"
+                          , "eine Nacht lang ohne Haus -"
+                          , "reich nur durch den Mond."
+                          )
+
+    describe "Multiple languages" $ do
+      it "Correctly parse a German Haiku" $
+        parseHaiku langs haiku1
+          `shouldBe` Just (german,  ( "Decken auf dem Gras,"
+                                    , "eine Nacht lang ohne Haus -"
+                                    , "reich nur durch den Mond."
+                                    ))
+      it "Correctly parse a foo lang Haiku" $
+        parseHaiku langs haiku2
+          `shouldBe` Just (fooLang, ( "a o a o a"
+                                    , "oo uu oo a o a o"
+                                    , "o a o a o"
+                                    ))

@@ -6,6 +6,7 @@ module HsKu
     , Haiku
     -- * Haiku parsing
     , parseHaiku
+    , parseHaikuForLanguage
   ) where
 
 import Data.Bool
@@ -36,8 +37,13 @@ type Haiku = (Text, Text, Text)
 
 type Parser = ParsecT Void Text (Reader Language)
 
-parseHaiku :: Language -> Text -> Maybe Haiku
-parseHaiku lang = eitherToMaybe . flip runReader lang . runParserT pHaiku ""
+parseHaiku :: Languages -> Text -> Maybe (Language, Haiku)
+parseHaiku langs text = asum (tryLang <$> langs)
+  where tryLang lang = (lang,) <$> parseHaikuForLanguage lang text
+
+parseHaikuForLanguage :: Language -> Text -> Maybe Haiku
+parseHaikuForLanguage lang =
+  eitherToMaybe . flip runReader lang . runParserT pHaiku ""
 
   where
 
