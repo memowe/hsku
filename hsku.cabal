@@ -22,7 +22,7 @@ library
     import:           basics
     exposed-modules:  HsKu, HsKu.Load
     build-depends:    yaml, megaparsec, mtl
-    hs-source-dirs:   src
+    hs-source-dirs:   lib
 
 test-suite hsku-test
     import:           basics
