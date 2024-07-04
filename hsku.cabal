@@ -9,43 +9,39 @@ extra-source-files: languages/*.yml
 
 common basics
     default-language:   Haskell2010
-    default-extensions: OverloadedStrings, TupleSections
+    default-extensions: OverloadedStrings
+                      , TupleSections
+                      , TypeOperators
+                      , DataKinds
+                      , DeriveGeneric
     build-depends:      base >= 4.14.0.0
                       , containers
                       , directory
                       , filepath
                       , text
                       , extra
+                      , aeson
+                      , servant
+                      , servant-server
     ghc-options:        -Wall
-
-common web
-    default-extensions: TypeOperators, DataKinds, DeriveGeneric
-    build-depends:      aeson, servant, servant-server, warp
 
 library
     import:           basics
-    exposed-modules:  HsKu, HsKu.Load
+    exposed-modules:  HsKu, HsKu.Load, HsKu.Web
     build-depends:    yaml, megaparsec, mtl
     hs-source-dirs:   lib
 
-library hsku-web
-    import:             basics, web
-    build-depends:      hsku
-    exposed-modules:    HsKu.Web
-    hs-source-dirs:     web
-
 executable hsku-webservice
-    import:             basics, web
-    build-depends:      hsku, hsku-web
+    import:             basics
+    build-depends:      hsku, warp
     hs-source-dirs:     webservice
     main-is:            Main.hs
 
 test-suite hsku-test
-    import:             basics, web
+    import:             basics
     type:               exitcode-stdio-1.0
     default-extensions: QuasiQuotes
     build-depends:      hsku
-                      , hsku-web
                       , hspec
                       , hspec-wai
                       , hspec-wai-json
