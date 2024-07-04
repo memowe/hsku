@@ -18,15 +18,38 @@ common basics
                       , extra
     ghc-options:        -Wall
 
+common web
+    default-extensions: TypeOperators, DataKinds, DeriveGeneric
+    build-depends:      aeson, servant, servant-server, warp
+
 library
     import:           basics
     exposed-modules:  HsKu, HsKu.Load
     build-depends:    yaml, megaparsec, mtl
-    hs-source-dirs:   src
+    hs-source-dirs:   lib
+
+library hsku-web
+    import:             basics, web
+    build-depends:      hsku
+    exposed-modules:    HsKu.Web
+    hs-source-dirs:     web
+
+executable hsku-webservice
+    import:             basics, web
+    build-depends:      hsku, hsku-web
+    hs-source-dirs:     webservice
+    main-is:            Main.hs
 
 test-suite hsku-test
-    import:           basics
-    type:             exitcode-stdio-1.0
-    build-depends:    hsku, hspec, temporary
-    hs-source-dirs:   test
-    main-is:          Main.hs
+    import:             basics, web
+    type:               exitcode-stdio-1.0
+    default-extensions: QuasiQuotes
+    build-depends:      hsku
+                      , hsku-web
+                      , hspec
+                      , hspec-wai
+                      , hspec-wai-json
+                      , uri-encode
+                      , temporary
+    hs-source-dirs:     test
+    main-is:            Main.hs
