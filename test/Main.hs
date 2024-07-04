@@ -1,15 +1,19 @@
 module Main (main) where
 
 import Test.Hspec
+import Test.Hspec.Wai
+import Test.Hspec.Wai.JSON
 import System.IO.Temp
 
 import HsKu
 import HsKu.Load
+import HsKu.Web
 import Data.Text
 import Data.Set as S
 import Data.Map as M
 import System.FilePath
 import System.Environment
+import Network.URI.Encode
 
 main :: IO ()
 main = hspec $ describe "HsKu tests" $ do
@@ -70,3 +74,18 @@ main = hspec $ describe "HsKu tests" $ do
                                     , "oo uu oo a o a o"
                                     , "o a o a o"
                                     ))
+
+    describe "Web service" $ do
+      let input = "Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond."
+          url i = "/haiku?input=" <> encodeTextToBS i
+      with (return $ hskuWebService langs) $ do
+        it "Reject nonsense" $
+          get (url "The answer is 42")
+            `shouldRespondWith` [json|{"result": null}|]
+        it "Correctly serve haiku" $
+          get (url input)
+            `shouldRespondWith` [json|{"result": [
+                                  "Decken auf dem Gras,",
+                                  "eine Nacht lang ohne Haus -",
+                                  "reich nur durch den Mond."
+                                  ]}|]
