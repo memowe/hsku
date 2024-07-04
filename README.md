@@ -11,7 +11,7 @@ $ cabal test
 
 [ghcup]: https://www.haskell.org/ghcup/
 
-## Usage example
+## Library usage example
 
 ```
 $ cabal repl
@@ -22,6 +22,21 @@ $ cabal repl
 "Deutsch"
 λ haiku
 ("Decken auf dem Gras,","eine Nacht lang ohne Haus -","reich nur durch den Mond.")
+```
+
+## Web service
+
+```
+$ cabal run hsku-webservice
+```
+Haiku parsing with JSON results:
+```
+$ curl http://localhost:8080/haiku?input=42
+{"result":null}
+$ curl  --get \
+        --data-urlencode "input=Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond" \
+        http://localhost:8080/haiku
+{"result":["Decken auf dem Gras,","eine Nacht lang ohne Haus -","reich nur durch den Mond"]}
 ```
 
 ## Author and license
