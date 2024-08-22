@@ -77,14 +77,13 @@ main = hspec $ describe "HsKu tests" $ do
                                     ))
 
     describe "Web service" $ do
-      let input = "Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond."
-          url i = "/haiku?input=" <> encodeTextToBS i
+      let url i = "/haiku?input=" <> encodeTextToBS i
       with (return $ hskuWebService langs) $ do
         it "Reject nonsense" $
           get (url "The answer is 42")
             `shouldRespondWith` [json|{"result": null}|]
         it "Correctly serve haiku" $
-          get (url input)
+          get (url haiku1)
             `shouldRespondWith` [json|{"result": [
                                   "Decken auf dem Gras,",
                                   "eine Nacht lang ohne Haus -",
