@@ -27,14 +27,20 @@ common basics
 
 library
     import:           basics
-    exposed-modules:  HsKu, HsKu.Load, HsKu.Web
-    build-depends:    yaml, megaparsec, mtl
+    exposed-modules:  HsKu, HsKu.Load, HsKu.Web, HsKu.JSON
+    build-depends:    yaml, megaparsec, mtl, bytestring
     hs-source-dirs:   lib
 
 executable hsku-webservice
     import:             basics
     build-depends:      hsku, warp
     hs-source-dirs:     webservice
+    main-is:            Main.hs
+
+executable hsku-cli
+    import:             basics
+    build-depends:      hsku, bytestring
+    hs-source-dirs:     cli
     main-is:            Main.hs
 
 test-suite hsku-test

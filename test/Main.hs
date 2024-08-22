@@ -14,6 +14,7 @@ import Data.Map as M
 import System.FilePath
 import System.Environment
 import Network.URI.Encode
+import HsKu.JSON (haikuToJSON)
 
 main :: IO ()
 main = hspec $ describe "HsKu tests" $ do
@@ -89,3 +90,15 @@ main = hspec $ describe "HsKu tests" $ do
                                   "eine Nacht lang ohne Haus -",
                                   "reich nur durch den Mond."
                                   ]}|]
+
+    describe "Command line interface" $ do
+      it "Reject nonsense" $
+        haikuToJSON langs "The answer is 42"
+          `shouldBe` [json|{"result": null}|]
+      it "Correctly return JSON haiku" $
+        haikuToJSON langs haiku1
+          `shouldBe`  [json|{"result": [
+                        "Decken auf dem Gras,",
+                        "eine Nacht lang ohne Haus -",
+                        "reich nur durch den Mond."
+                        ]}|]

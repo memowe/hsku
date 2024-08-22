@@ -39,6 +39,17 @@ $ curl  --get \
 {"result":["Decken auf dem Gras,","eine Nacht lang ohne Haus -","reich nur durch den Mond"]}
 ```
 
+## Simple JSON CLI
+
+```
+$ cabal run hsku-cli
+42
+{"result":null}
+$ cabal run hsku-cli
+Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond.
+{"result":["Decken auf dem Gras,","eine Nacht lang ohne Haus -","reich nur durch den Mond."]}
+```
+
 ## Author and license
 
 (c) 2024 Mirko Westermeier
