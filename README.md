@@ -2,7 +2,7 @@
 
 ## Build and test
 
-You need a [modern GHC and cabal][ghcup].
+You need a [modern GHC (>= 9) and cabal][ghcup].
 
 ```
 $ cabal build all
