@@ -35,7 +35,7 @@ type Haiku = (Text, Text, Text)
 
 -- Haiku parsing
 
-type Parser = ParsecT Void Text (Reader Language)
+type Parser = ReaderT Language (Parsec Void Text)
 
 parseHaiku :: Languages -> Text -> Maybe (Language, Haiku)
 parseHaiku langs text = asum (tryLang <$> langs)
@@ -43,7 +43,7 @@ parseHaiku langs text = asum (tryLang <$> langs)
 
 parseHaikuForLanguage :: Language -> Text -> Maybe Haiku
 parseHaikuForLanguage lang =
-  eitherToMaybe . flip runReader lang . runParserT pHaiku ""
+  eitherToMaybe . runParser (runReaderT pHaiku lang) ""
 
   where
 
