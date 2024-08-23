@@ -1,4 +1,4 @@
-# hsku - Haskell Haiku detection (German)
+# hsku - Haskell Haiku detection
 
 ## Build and test
 
