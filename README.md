@@ -52,7 +52,7 @@ Decken auf dem Gras, eine Nacht lang ohne Haus - reich nur durch den Mond.
 
 ## Author and license
 
-(c) 2024 Mirko Westermeier
+(c) 2025 Mirko Westermeier
 
 Licensed under the MIT license (see [LICENSE][license]) for details.
 
