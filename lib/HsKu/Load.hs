@@ -23,9 +23,9 @@ instance FromJSON Language where
           toDiphtongs = S.fromList . T.words
   parseJSON _ = fail "Couldn't parse language"
 
-loadLanguages :: IO Languages
-loadLanguages = do
-  langDir   <- (! "dir") . (! "languages") <$> loadConfig
+loadLanguages :: Config -> IO Languages
+loadLanguages cfg = do
+  let langDir = cfg ! "languages" ! "dir"
   langFiles <- P.filter ((== ".yml") . takeExtension) <$> listDirectory langDir
   nameLangs <- fmap rights $ forM langFiles $ \fp -> do
                 let ln = takeBaseName fp

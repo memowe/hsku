@@ -6,8 +6,8 @@ import Data.Map (Map, assocs, fromList)
 import Text.ParserCombinators.ReadP
 import System.Environment
 
-type    IniMap  = Map String (Map String String)
-newtype Ini     = Ini {sections :: IniMap} deriving Eq
+type    Config  = Map String (Map String String)
+newtype Ini     = Ini {sections :: Config} deriving Eq
 
 instance Show Ini where
   show = unlines . map section . assocs . sections
@@ -30,7 +30,7 @@ instance Read Ini where
           no      = munch1 . flip notElem :: String -> ReadP String
           trim    = dropWhile (== ' ') . dropWhileEnd (== ' ')
 
-loadConfig :: IO IniMap
+loadConfig :: IO Config
 loadConfig = do
   configFileName <- fromMaybe "config.ini" <$> lookupEnv "HSKU_CONFIG_FILE"
   sections . read <$> readFile configFileName

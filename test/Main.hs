@@ -34,6 +34,13 @@ main = hspec $ describe "HsKu tests" $ do
         M.fromList  [ ("foo",   M.fromList  [ ("bar baz", "quux quuux")
                                           , ("zosch", "xnorfzt") ])
                     , ("o hai", M.fromList  [ ("can", "has cheezburgers") ])] )
+    describe "Read example ini file" $ do
+      ini <- runIO $ withSystemTempFile "config.ini" $ \fp h -> do
+              hPutStr h "[foo]\nbar = baz\n" >> hClose h
+              setEnv "HSKU_CONFIG_FILE" fp
+              loadConfig
+      it "Correct ini data" $
+        ini `shouldBe` M.fromList [("foo", M.fromList [("bar", "baz")])]
 
   context "Language loading" $ do
     langs <- runIO $ withSystemTempDirectory "hsku-languages" $ \dir -> do
@@ -44,7 +51,7 @@ main = hspec $ describe "HsKu tests" $ do
               writeFile (dir </> "config.ini")
                 ("[languages]\ndir = " ++ dir ++ "\n")
               setEnv "HSKU_CONFIG_FILE" (dir </> "config.ini")
-              loadLanguages
+              loadConfig >>= loadLanguages
     it "Correct languages parsed" $
       langs `shouldBe` M.fromList
         [ ("foo", Language  { name      = "foo"
