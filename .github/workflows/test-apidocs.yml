@@ -22,7 +22,7 @@ jobs:
         cabal-update: true
 
     - name: Checkout repository content
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Configure the build
       run: |
@@ -31,7 +31,7 @@ jobs:
       # The last step generates dist-newstyle/cache/plan.json for the cache key
 
     - name: Restore cached dependencies
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       id: cache
       env:
         key: ${{ runner.os }}-ghc-${{ steps.setup-outputs.ghc-version }}-cabal-${{ steps.setup.outputs.cabal-version }}
@@ -53,7 +53,7 @@ jobs:
       run: cabal haddock --builddir=haddock_build --haddock-hyperlinked-source --haddock-html-location='https://hackage.haskell.org/package/$pkg-$version/docs'
 
     - name: Save cached dependencies
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       if: ${{ steps.cache.outputs.cache-primary-key != steps.cache.outputs.cache-matched-key }}
       with:
         path: ${{ steps.setup.outputs.cabal-store }}
@@ -63,7 +63,7 @@ jobs:
       run: mv $(find haddock_build -wholename '*doc/html/hsku' | head -n 1) haddock_html
 
     - name: Store generated API docs as artifact
-      uses: actions/upload-pages-artifact@v2
+      uses: actions/upload-pages-artifact@v3
       with:
         path: haddock_html
 
@@ -80,4 +80,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deploy
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
