@@ -3,21 +3,22 @@ module Main (main) where
 import Test.Hspec
 import Test.Hspec.Wai
 import Test.Hspec.Wai.JSON
-import System.IO.Temp
-
-import HsKu
-import HsKu.Config
-import HsKu.Load
-import HsKu.Web
 import Data.Maybe
 import Data.Text
 import Data.Set as S
 import Data.Map as M
 import Text.Read (readMaybe)
+import Network.URI.Encode
+import System.IO
+import System.IO.Temp
 import System.FilePath
 import System.Environment
-import Network.URI.Encode
-import HsKu.JSON (haikuToJSON)
+
+import HsKu
+import HsKu.Config
+import HsKu.Load
+import HsKu.JSON
+import HsKu.Web
 
 main :: IO ()
 main = hspec $ describe "HsKu tests" $ do
