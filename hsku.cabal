@@ -27,7 +27,7 @@ common basics
 
 library
     import:           basics
-    exposed-modules:  HsKu, HsKu.Load, HsKu.Web, HsKu.JSON
+    exposed-modules:  HsKu, HsKu.Config, HsKu.Load, HsKu.Web, HsKu.JSON
     build-depends:    yaml, megaparsec, mtl, bytestring
     hs-source-dirs:   lib
 

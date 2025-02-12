@@ -6,11 +6,14 @@ import Test.Hspec.Wai.JSON
 import System.IO.Temp
 
 import HsKu
+import HsKu.Config
 import HsKu.Load
 import HsKu.Web
+import Data.Maybe
 import Data.Text
 import Data.Set as S
 import Data.Map as M
+import Text.Read (readMaybe)
 import System.FilePath
 import System.Environment
 import Network.URI.Encode
@@ -18,6 +21,18 @@ import HsKu.JSON (haikuToJSON)
 
 main :: IO ()
 main = hspec $ describe "HsKu tests" $ do
+
+  context "Configuration file" $ do
+
+    describe "Read example ini file content" $ do
+      let iniContent  =     "[foo]\n\nbar baz = quux quuux\nzosch= xnorfzt\n"
+                        ++  "[o hai]\ncan = has cheezburgers\n"
+          mini        = readMaybe iniContent :: Maybe Ini
+      it "Some parsing result" $ mini `shouldSatisfy` isJust
+      it "Correct values" $ fromJust mini `shouldBe` Ini (
+        M.fromList  [ ("foo",   M.fromList  [ ("bar baz", "quux quuux")
+                                          , ("zosch", "xnorfzt") ])
+                    , ("o hai", M.fromList  [ ("can", "has cheezburgers") ])] )
 
   context "Language loading" $ do
     langs <- runIO $ withSystemTempDirectory "hsku-languages" $ \dir -> do

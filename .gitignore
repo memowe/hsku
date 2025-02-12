@@ -1,3 +1,6 @@
+# Configuration file
+config.ini
+
 # Vim swap files
 *.sw?
 

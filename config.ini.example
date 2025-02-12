@@ -1,0 +1,5 @@
+[languages]
+dir = languages
+
+[mattermost]
+post-url = https://mattermost.example.org/hooks/FOO
