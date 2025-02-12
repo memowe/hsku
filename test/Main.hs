@@ -40,7 +40,9 @@ main = hspec $ describe "HsKu tests" $ do
                 "name: foo\nvowels: a b c\ndiphtongs: de fg\n"
               writeFile (dir </> "bar.yml")
                 "name: bar\nvowels: h i j\ndiphtongs: kl mn\n"
-              setEnv "HSKU_LANGUAGES" dir
+              writeFile (dir </> "config.ini")
+                ("[languages]\ndir = " ++ dir ++ "\n")
+              setEnv "HSKU_CONFIG_FILE" (dir </> "config.ini")
               loadLanguages
     it "Correct languages parsed" $
       langs `shouldBe` M.fromList

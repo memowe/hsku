@@ -2,6 +2,7 @@
 module HsKu.Load where
 
 import HsKu
+import HsKu.Config
 import Prelude as P
 import Data.Text as T
 import Data.Maybe
@@ -9,7 +10,6 @@ import Data.Either
 import Data.Set as S
 import Data.Map as M
 import Data.Yaml
-import System.Environment
 import System.Directory
 import System.FilePath
 import Control.Monad
@@ -25,7 +25,7 @@ instance FromJSON Language where
 
 loadLanguages :: IO Languages
 loadLanguages = do
-  langDir   <- fromMaybe "languages" <$> lookupEnv "HSKU_LANGUAGES"
+  langDir   <- (! "dir") . (! "languages") <$> loadConfig
   langFiles <- P.filter ((== ".yml") . takeExtension) <$> listDirectory langDir
   nameLangs <- fmap rights $ forM langFiles $ \fp -> do
                 let ln = takeBaseName fp
