@@ -39,6 +39,8 @@ $ curl  --get \
 {"result":["Decken auf dem Gras,","eine Nacht lang ohne Haus -","reich nur durch den Mond"]}
 ```
 
+With its `/mattermost` endpoint, the web service can act as a Mattermost integration. See [config.ini](config.ini.example) fields for details.
+
 ## Simple JSON CLI
 
 ```

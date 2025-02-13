@@ -103,7 +103,7 @@ main = hspec $ describe "HsKu tests" $ do
 
     describe "Web service" $ do
       let url i = "/haiku?input=" <> encodeTextToBS i
-      with (return $ hskuWebService langs) $ do
+      with (return $ hskuWebService M.empty langs) $ do
         it "Reject nonsense" $
           get (url "The answer is 42")
             `shouldRespondWith` [json|{"result": null}|]

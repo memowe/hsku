@@ -1,5 +1,8 @@
 [languages]
 dir = languages
 
+[webservice]
+port = 8080
+
 [mattermost]
 post-url = https://mattermost.example.org/hooks/FOO
