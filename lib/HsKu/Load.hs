@@ -5,7 +5,6 @@ import HsKu
 import HsKu.Config
 import Prelude as P
 import Data.Text as T
-import Data.Maybe
 import Data.Either
 import Data.Set as S
 import Data.Map as M
