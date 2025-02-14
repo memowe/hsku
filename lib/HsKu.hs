@@ -88,6 +88,7 @@ parseHaikuForLanguage lang =
           (end2, start3)  <- splitWordSep <$> pWordSep
           line3           <- pSyls 5
           end3            <- option "" pSep
+          eof
           return  ( start1 <> line1 <> end1
                   , start2 <> line2 <> end2
                   , start3 <> line3 <> end3

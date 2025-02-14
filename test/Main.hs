@@ -86,6 +86,9 @@ main = hspec $ describe "HsKu tests" $ do
                           , "eine Nacht lang ohne Haus -"
                           , "reich nur durch den Mond."
                           )
+      it "Correctly reject a long non-Haiku" $
+        parseHaikuForLanguage german (haiku1 <> " Zu langer Text!")
+          `shouldBe` Nothing
 
     describe "Multiple languages" $ do
       it "Correctly parse a German Haiku" $
