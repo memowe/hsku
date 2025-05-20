@@ -31,7 +31,7 @@ prepare api docs:
   script:
     - cabal haddock --haddock-hyperlinked-source --haddock-html-location='https://hackage.haskell.org/package/$$pkg-$$version/docs'
     - mkdir -p apidocs
-    - mv $(find dist-newstyle -wholename '*doc/html/hsku' | head -n 1) apidocs
+    - mv $(find dist-newstyle -wholename '*doc/html/hsku' | head -n 1)/* apidocs
   artifacts:
     paths:
       - apidocs
